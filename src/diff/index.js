@@ -107,7 +107,7 @@ export function diffChildren (previous, next, parentPath) {
 
   dift(previousChildren, nextChildren, effect, key)
 
-  return updateChildren(changes)
+  return changes.length ? updateChildren(changes) : changes;
 }
 
 /**
@@ -150,7 +150,10 @@ export function diffNode (prev, next, path) {
       return [replaceNode(prev, next, path)]
     }
     let changes = diffAttributes(prev, next)
-    changes.push(diffChildren(prev, next, path))
+    let childrenDiff = diffChildren(prev, next, path)
+    if (childrenDiff.length) {
+      changes.push(childrenDiff)
+    }
     return changes
   }
 
